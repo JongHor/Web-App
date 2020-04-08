@@ -58,12 +58,12 @@ class Login extends React.Component{
     onSubmit = e => {
         e.preventDefault()
         const { email, password } = this.state
+        console.log(email+" "+password)
         const user = {
             "email":email,
             "password":password
           };
         const url = 'http://localhost:3030/api/v3/users/login'
-        const body = JSON.stringify(user)
         axios.post(url,user) .then(res => {
             console.log(res);
             console.log(res.data);
@@ -88,24 +88,22 @@ class Login extends React.Component{
             this.setState({currentUser:null})
         })
     }
-    signup(){
-        this.setState({
-            signup:true
-        })
+    createNew = () =>{
+      this.setState({signup:true})
     }
     render(){
         const {message,currentUser} =this.state
         if(this.state.signup){
            return (
                <div>
-                <Signup/>
+                <Signup />
                </div>
            ) 
         }
         if (currentUser){
             return (
                 <div>
-                <Navbar logout={this.logout} username={currentUser.name}></Navbar>
+                <Navbar logout={this.logout} username={currentUser.username}></Navbar>
                 <MessageList
                        image={this.state.image}
                        messages={this.state.messages}
@@ -116,16 +114,16 @@ class Login extends React.Component{
             )
         }
         return (
-            <div>
+          <div className="section">
   <div className="container">
     <div className="col-md-12">
       <h1 className="margin-bottom-15">JONG-HOR</h1>
-      <form className="form-horizontal templatemo-container templatemo-login-form-1 margin-bottom-30" role="form" action="#" method="post">				
+      <form className="form-horizontal templatemo-container templatemo-login-form-1 margin-bottom-30" role="form" onSubmit={this.onSubmit}>				
         <div className="form-group">
           <div className="col-xs-12">		            
             <div className="control-wrapper">
               <label htmlFor="username" className="control-label fa-label"><i className="fa fa-user fa-medium" /></label>
-              <input type="text" className="form-control" id="username" placeholder="Username" />
+              <input type="text" onChange={this.onChange} name="email" className="form-control" id="username" placeholder="Username" />
             </div>		            	            
           </div>              
         </div>
@@ -133,7 +131,7 @@ class Login extends React.Component{
           <div className="col-md-12">
             <div className="control-wrapper">
               <label htmlFor="password" className="control-label fa-label"><i className="fa fa-lock fa-medium" /></label>
-              <input type="password" className="form-control" id="password" placeholder="Password" />
+              <input type="password" onChange={this.onChange} className="form-control" name="password" id="password" placeholder="Password" />
             </div>
           </div>
         </div>
@@ -149,7 +147,7 @@ class Login extends React.Component{
         <hr />
       </form>
       <div className="text-center" >
-        <a onClick={this.signup} className="templatemo-create-new">Create new account <i className="fa fa-arrow-circle-o-right" /></a>	
+        <a onClick={this.createNew} className="templatemo-create-new">Create new account <i className="fa fa-arrow-circle-o-right" /></a>	
       </div>
     </div>
   </div>
