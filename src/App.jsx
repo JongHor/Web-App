@@ -9,11 +9,7 @@ function App() {
   return (
     <Router>
       <div className="container mt-4 mb-5">
-        <Route exact path="/" render={ props => (
-          <div>
-         <Login/>
-          </div>
-        )} />
+        <Route path="/" component={Login} /> 
           
         <Route path="/about" component={About} />        
       </div>

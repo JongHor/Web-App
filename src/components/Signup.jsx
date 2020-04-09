@@ -1,52 +1,103 @@
 import React, { Component } from 'react'
+import axios from 'axios';
+import { Link } from 'react-router-dom';
+import Login from './Login'
 
 export default class Signup extends Component {
+  constructor(props){
+    super(props)
+
+    this.state ={
+        firstname:'',
+        lastname:'',
+        gender:'',
+        username:'',
+        email: '',
+        password:'',
+        confirmpassword:'',
+        success:false
+    }
+}
+
+onChange = e => {
+  const { name, value } = e.target
+  this.setState({
+      [name]: value
+  })
+} 
+
+  onSubmit = e => {
+    e.preventDefault()
+    const { firstname,lastname,gender,username,email,password,confirmpassword } = this.state
+    if(password==confirmpassword){
+    const user = {
+      "firstname":firstname
+      ,"lastname":lastname
+      ,"gender":gender
+      ,"username":username,
+        "email":email,
+        "password":password
+      };
+    const url = 'http://localhost:3030/api/v3/users/signup'
+    axios.post(url,user) .then(res => {
+        console.log(res);
+        console.log(res.data);
+        localStorage.setItem('token',res.data.token)
+        this.setState({success:true})
+      })
+    }
+} 
     render() {
+      if(this.state.success){
         return (
-           <div>
+          <Login/>
+      ) 
+      }
+        return (
+          <div className="section">
   <h1 className="margin-bottom-15">Create Account</h1>
   <div className="container">
     <div className="col-md-12">			
-      <form className="form-horizontal templatemo-create-account templatemo-container" role="form" action="#" method="post">
+      <form className="form-horizontal templatemo-create-account templatemo-container" role="form" onSubmit={this.onSubmit}>
         <div className="form-inner">
           <div className="form-group">
             <div className="col-md-6">		          	
               <label htmlFor="first_name" className="control-label">First Name</label>
-              <input type="text" className="form-control" id="first_name" placeholder />		            		            		            
+              <input type="text" className="form-control"  onChange={this.onChange} name="firstname" id="first_name" placeholder />		            		            		            
             </div>  
             <div className="col-md-6">		          	
               <label htmlFor="last_name" className="control-label">Last Name</label>
-              <input type="text" className="form-control" id="last_name" placeholder />		            		            		            
+              <input type="text" className="form-control"  onChange={this.onChange} name="lastname" id="last_name" placeholder />		            		            		            
             </div>             
           </div>
           <div className="form-group">
             <div className="col-md-12">		          	
               <label htmlFor="username" className="control-label">Email</label>
-              <input type="email" className="form-control" id="email" placeholder />		            		            		            
+              <input type="email" className="form-control"  onChange={this.onChange} name="email" id="email" placeholder />		            		            		            
             </div>              
           </div>			
           <div className="form-group">
             <div className="col-md-6">		          	
               <label htmlFor="username" className="control-label">Username</label>
-              <input type="text" className="form-control" id="username" placeholder />		            		            		            
+              <input type="text" className="form-control"  onChange={this.onChange} name="username" id="username" placeholder />		            		            		            
             </div>
             <div className="col-md-6 templatemo-radio-group">
               <label className="radio-inline">
-                <input type="radio" name="optionsRadios" id="optionsRadios1" defaultValue="option1" /> Male
+                <input type="radio" name="optionsRadios"  onChange={this.onChange} name="gender"   id="optionsRadios1" defaultValue="male" /> Male
               </label>
               <label className="radio-inline">
-                <input type="radio" name="optionsRadios" id="optionsRadios2" defaultValue="option2" /> Female
+                <input type="radio" name="optionsRadios"  onChange={this.onChange} name="gender"   id="optionsRadios2" defaultValue="female" /> Female
               </label>
             </div>             
           </div>
           <div className="form-group">
             <div className="col-md-6">
               <label htmlFor="password" className="control-label">Password</label>
-              <input type="password" className="form-control" id="password" placeholder />
+              <input type="password" className="form-control" onChange={this.onChange} name="password" id="password" placeholder />
             </div>
             <div className="col-md-6">
               <label htmlFor="password" className="control-label">Confirm Password</label>
-              <input type="password" className="form-control" id="password_confirm" placeholder />
+              <input type="password" className="form-control" onChange={this.onChange} name="confirmpassword" id="password_confirm" placeholder />
             </div>
           </div>
           <div className="form-group">
@@ -57,7 +108,7 @@ export default class Signup extends Component {
           <div className="form-group">
             <div className="col-md-12">
               <input type="submit" defaultValue="Create account" className="btn btn-info" />
-              <a href="login-1.html" className="pull-right">Login</a>
+              <a href="/" className="pull-right">Login</a>
             </div>
           </div>	
         </div>				    	
