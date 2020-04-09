@@ -24,7 +24,6 @@ export default class Headermain extends Component {
             <li><a href="index.html">Home</a></li>
             <li><a href="fake_url">Profile</a></li>
             <li><a href="fake_url">About</a></li>
-            <li><a href="columns.html">Columns</a></li>
             <li><a href="fake_url">Username</a></li>
             <li><a href="fake_url"><span>Log out</span></a></li>
           </ul>
