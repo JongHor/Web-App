@@ -11,16 +11,16 @@ import Column from './components/Column';
 function App() {
   return (
     <div>
-    {/* // <Router>
-    //   <div className="container mt-4 mb-5">
-    //     <Route path="/" component={Login} /> 
+     <Router>
+       <div className="container mt-4 mb-5">
+         <Route path="/" component={Login} /> 
           
-    //     <Route path="/about" component={About} />        
-    //   </div>
-    //   </Router> */}
-    <Headermain/>
+         <Route path="/about" component={About} />        
+       </div>
+       </Router>
+    {/* <Headermain/>
     <Column/>
-    <Footermain/>
+    <Footermain/> */}
     </div>
   );
 }

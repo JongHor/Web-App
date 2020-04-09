@@ -38,7 +38,7 @@ onChange = e => {
         "email":email,
         "password":password
       };
-    const url = 'http://localhost:3030/api/v3/users/signup'
+    const url = 'https://jonghor.herokuapp.com/api/v3/users/signup'
     axios.post(url,user) .then(res => {
         console.log(res);
         console.log(res.data);

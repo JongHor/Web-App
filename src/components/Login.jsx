@@ -6,6 +6,7 @@ import axios from 'axios';
 import Signup from './Signup'
 import Headermain from './Headermain';
 import Footermain from './Footermain';
+import Column from './Column'
 class Login extends React.Component{
     constructor(props){
         super(props)
@@ -27,7 +28,7 @@ class Login extends React.Component{
     componentDidMount(){ // start webpage
         const exist = localStorage.getItem('token')
         if(exist!=null){
-            const url = 'http://localhost:3030/api/v3/users/me'
+            const url = 'https://jonghor.herokuapp.com/api/v3/users/me'
             axios.get(url,{
                 headers: {
                   'Authorization': `Bearer ${exist}`
@@ -65,7 +66,7 @@ class Login extends React.Component{
             "email":email,
             "password":password
           };
-        const url = 'http://localhost:3030/api/v3/users/login'
+        const url = 'https://jonghor.herokuapp.com/api/v3/users/login'
         axios.post(url,user) .then(res => {
             console.log(res);
             console.log(res.data);
@@ -76,7 +77,7 @@ class Login extends React.Component{
 
     logout(){
         const exist = localStorage.getItem('token')
-        const url = 'http://localhost:3030/api/v3/users/logout'
+        const url = 'https://jonghor.herokuapp.com/api/v3/users/logout'
         const head = {
             headers: {
                 'Authorization': `Bearer ${exist}`
@@ -107,6 +108,7 @@ class Login extends React.Component{
                 <div>
                 <Navbar logout={this.logout} username={currentUser.username}></Navbar>
                 <Headermain/>
+                <Column/>
                 <Footermain/>
                 </div> 
             )
