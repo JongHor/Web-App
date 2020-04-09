@@ -3,7 +3,7 @@ import React, { Component } from 'react'
 export default class Headermain extends Component {
     render() {
         return (
-           <div>
+           <div className="parallax">
   <div className="header" id="top">
     <nav className="navbar navbar-inverse" role="navigation">
       <div className="container">
@@ -15,20 +15,18 @@ export default class Headermain extends Component {
             <span className="icon-bar" />
           </button>
           <a href="fake_url" className="navbar-brand scroll-top"><img src="images/logo.png" alt="Layer" />JONG - HOR</a>
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
         </div>
         {/*/.navbar-header*/}
         <div id="main-nav" className="collapse navbar-collapse">
           <ul className="nav navbar-nav navbar-right">
             <li><a href="index.html">Home</a></li>
-            <li><a href="fake_url">Pages</a>
-              <ul className="sub-menu">
-                <li><a href="left_sidebar.html">Left Sidebar</a></li>
-                <li><a href="right_sidebar.html">Right Sidebar</a></li>
-                <li><a href="without_sidebar.html">Without Sidebar</a></li>
-              </ul>
-            </li>
+            <li><a href="fake_url">Profile</a></li>
+            <li><a href="fake_url">About</a></li>
             <li><a href="columns.html">Columns</a></li>
-            <li><a href="fake_url"><span>Sign Up</span></a></li>
+            <li><a href="fake_url">Username</a></li>
+            <li><a href="fake_url"><span>Log out</span></a></li>
           </ul>
         </div>
         {/*/.navbar-collapse*/}

@@ -1,6 +1,5 @@
 import React from 'react'
 import 'bulma/css/bulma.css'
-import Navbar from './Navbar'
 import MessageList from './MessageList'
 import axios from 'axios';
 import Signup from './Signup'
@@ -106,7 +105,6 @@ class Login extends React.Component{
         if (currentUser){
             return (
                 <div>
-                <Navbar logout={this.logout} username={currentUser.username}></Navbar>
                 <Headermain/>
                 <Column/>
                 <Footermain/>

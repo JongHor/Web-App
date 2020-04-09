@@ -7,20 +7,18 @@ import About from './components/About'
 import Headermain from './components/Headermain';
 import Footermain from './components/Footermain';
 import Column from './components/Column';
+import Profile from './components/Profile';
 
 function App() {
   return (
     <div>
      <Router>
-       <div className="container mt-4 mb-5">
+       <div >
          <Route path="/" component={Login} /> 
-          
+         <Route path="/profile" component={Profile} />
          <Route path="/about" component={About} />        
        </div>
        </Router>
-    {/* <Headermain/>
-    <Column/>
-    <Footermain/> */}
     </div>
   );
 }

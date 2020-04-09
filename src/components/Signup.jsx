@@ -100,11 +100,7 @@ onChange = e => {
               <input type="password" className="form-control" onChange={this.onChange} name="confirmpassword" id="password_confirm" placeholder />
             </div>
           </div>
-          <div className="form-group">
-            <div className="col-md-12">
-              <label><input type="checkbox" />I agree to the <a href="javascript:;" data-toggle="modal" data-target="#templatemo_modal">Terms of Service</a> and <a href="#">Privacy Policy.</a></label>
-            </div>
-          </div>
+          
           <div className="form-group">
             <div className="col-md-12">
               <input type="submit" defaultValue="Create account" className="btn btn-info" />
