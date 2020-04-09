@@ -4,6 +4,8 @@ import Navbar from './Navbar'
 import MessageList from './MessageList'
 import axios from 'axios';
 import Signup from './Signup'
+import Headermain from './Headermain';
+import Footermain from './Footermain';
 class Login extends React.Component{
     constructor(props){
         super(props)
@@ -104,12 +106,8 @@ class Login extends React.Component{
             return (
                 <div>
                 <Navbar logout={this.logout} username={currentUser.username}></Navbar>
-                <MessageList
-                       image={this.state.image}
-                       messages={this.state.messages}
-                       onChange={this.onChange}
-                       post={this.post}
-                       delete={this.delete} />
+                <Headermain/>
+                <Footermain/>
                 </div> 
             )
         }

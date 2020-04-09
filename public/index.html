@@ -14,7 +14,13 @@
 	<link href="%PUBLIC_URL%/css/font-awesome.min.css" rel="stylesheet" type="text/css">
 	<link href="%PUBLIC_URL%/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 	<link href="%PUBLIC_URL%/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css">
-	<link href="%PUBLIC_URL%/css/templatemo_style.css" rel="stylesheet" type="text/css">	
+  <link href="%PUBLIC_URL%/css/templatemo_style.css" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="%PUBLIC_URL%/css/bootstrap.min.css">
+  <link rel="stylesheet" href="%PUBLIC_URL%/css/font-awesome.min.css"> <!-- Font Awesome -->
+  <link rel="stylesheet" href="%PUBLIC_URL%/css/wow-animate.css"> <!-- Wow Animate -->
+  <link rel="stylesheet" href="%PUBLIC_URL%/css/templatemo-style.css">
+  
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -35,6 +41,7 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root">
       
+      
     </div>
     <!--
       This HTML file is a template.
@@ -46,5 +53,17 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script src="%PUBLIC_URL%/jsmain/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="%PUBLIC_URL%/jsmain/vendor/jquery-1.11.1.min.js"></script>
+    <script src="%PUBLIC_URL%/jsmain/vendor/bootstrap.min.js"></script>
+    <script src="%PUBLIC_URL%/jsmain/vendor/wow-animate.js"></script>
+    <script src="%PUBLIC_URL%/jsmain/main.js"></script>
+    <script>
+      // wow
+      new WOW ({
+        animateClass: 'animated',
+        offset:       100
+      }).init();
+  </script>
   </body>
 </html>
