@@ -6,6 +6,7 @@ import Login from './components/Login'
 import About from './components/About'
 import Headermain from './components/Headermain';
 import Footermain from './components/Footermain';
+import Column from './components/Column';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
     //   </div>
     //   </Router> */}
     <Headermain/>
+    <Column/>
     <Footermain/>
     </div>
   );

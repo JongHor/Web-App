@@ -14,13 +14,13 @@ export default class Headermain extends Component {
             <span className="icon-bar" />
             <span className="icon-bar" />
           </button>
-          <a href="#" className="navbar-brand scroll-top"><img src="images/logo.png" alt="Layer Template" />Layer</a>
+          <a href="fake_url" className="navbar-brand scroll-top"><img src="images/logo.png" alt="Layer" />JONG - HOR</a>
         </div>
         {/*/.navbar-header*/}
         <div id="main-nav" className="collapse navbar-collapse">
           <ul className="nav navbar-nav navbar-right">
             <li><a href="index.html">Home</a></li>
-            <li><a href="#">Pages</a>
+            <li><a href="fake_url">Pages</a>
               <ul className="sub-menu">
                 <li><a href="left_sidebar.html">Left Sidebar</a></li>
                 <li><a href="right_sidebar.html">Right Sidebar</a></li>
@@ -28,7 +28,7 @@ export default class Headermain extends Component {
               </ul>
             </li>
             <li><a href="columns.html">Columns</a></li>
-            <li><a href="#"><span>Sign Up</span></a></li>
+            <li><a href="fake_url"><span>Sign Up</span></a></li>
           </ul>
         </div>
         {/*/.navbar-collapse*/}
