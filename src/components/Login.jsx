@@ -119,7 +119,7 @@ class Login extends React.Component{
             )
         }
         return (
-          <div className="section">
+          <div className="section" >
   <div className="container">
     <div className="col-md-12">
       <h1 className="margin-bottom-15">JONG-HOR</h1>

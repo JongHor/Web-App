@@ -15,11 +15,6 @@ export default class Footermain extends Component {
           <p>Copyright © 2020</p>
         </div>
       </div>
-      <div className="col-md-12">
-        <div className="third-arrow">
-        <Link to="/home"><a  className="scroll-link btn btn-dark" data-id="top"><i className="fa fa-angle-up" /></a></Link>
-        </div>
-      </div>
     </div>
   </footer>
 </div>

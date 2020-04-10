@@ -74,7 +74,7 @@ h2 {
 	padding-left: 30px;
 }
 .templatemo-container {
-	background-color: rgba(255,255,255,0.8);
+	background-color: rgb(216, 140, 216);
 	border: 1px solid #dedede;
 	border-radius: 8px;
 	margin: 0 auto;
@@ -179,7 +179,7 @@ h2 {
 5. create-account
 ---------------------------------------*/
 .templatemo-create-account {
-	background-color: #fff;
+	background-color:rgb(216, 140, 216);
 	border: none;
 	max-width: 700px;	
 }
