@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import About from './About'
 import Profile from './Profile'
 import Column from './Column'
+import Rooms from './Rooms.jsx'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
 
@@ -47,6 +48,7 @@ function Headermain(props){
       <Route path="/about"><About /></Route>
       <Route path="/profile"  component={Profile}></Route>
       <Route path="/home"  component={Column}></Route>
+      <Route path="/select" component={Rooms}></Route>
       </div>
     </Router>
         )

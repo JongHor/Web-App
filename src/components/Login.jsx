@@ -1,11 +1,9 @@
 import React from 'react'
 import 'bulma/css/bulma.css'
-import MessageList from './MessageList'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
 import Headermain from './Headermain';
 import Footermain from './Footermain';
-import Column from './Column'
 class Login extends React.Component{
     constructor(props){
         super(props)
@@ -119,7 +117,7 @@ class Login extends React.Component{
             )
         }
         return (
-          <div className="section" >
+          <div className="section">
   <div className="container">
     <div className="col-md-12">
       <h1 className="margin-bottom-15">JONG-HOR</h1>
