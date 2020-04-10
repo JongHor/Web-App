@@ -1,7 +1,19 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link ,Redirect} from 'react-router-dom';
 import Rooms from './Rooms.jsx'
 export default class Column extends Component {
+  constructor(props){
+    super(props)
+
+    this.state ={
+        selected:false 
+    }
+
+
+  }
+  selectHor = () =>{
+    this.setState({selected:true})
+  }
     render() {
       const room=[
         {
@@ -35,8 +47,24 @@ export default class Column extends Component {
             "room": 206
         }
     ]    
+    if(this.state.selected){
+      // this.setState({selected:false})
+      return (
+        <Router>
+           < Redirect to='/select' />
+          <div>
+        <Route exact path="/select" render={ props => (
+          <div>
+          <Rooms 
+              rooms={room} 
+               />
+          </div>
+        )} />
+</div>
+</Router>
+      )
+    }
         return (
-          <Router>
            <div className="parallax">
   <div className="bg__title templatemo-position-relative">
     <div className="container">
@@ -74,9 +102,7 @@ export default class Column extends Component {
               <div className="line" />
               <p>Donec suscipit hendrerit euismod. Ut at nisl sem. Praesent ac efficitur mi. Sed fermentum iaculis accumsan. Mauris rutrum dignissim eros id finibus sed turpis in diam mollis lobortis. <br /><br />Phasellus tincidunt leo ante, quis convallis lectus pretium vel. Ut blandit, est eget feugiat laoreet, magna nisi volutpat ligula, commodo efficitur metus magna vel sapien.</p>                  
               <div className="button">
-                <Link to="/select">
-                <a >Read More</a>
-                </Link>
+                <a onClick={this.selectHor}>Read More</a>
               </div>                  
             </div>
           </div>
@@ -211,16 +237,7 @@ export default class Column extends Component {
       </div>
     </div>
   </div>
-
-  <Route exact path="/select" render={ props => (
-          <div>
-          <Rooms 
-              rooms={room} 
-               />
-          </div>
-        )} />
-</div>
-</Router>
+  </div>
         )
     }
 }
