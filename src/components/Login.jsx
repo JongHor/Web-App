@@ -1,8 +1,8 @@
 import React from 'react'
 import 'bulma/css/bulma.css'
 import MessageList from './MessageList'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import axios from 'axios';
-import Signup from './Signup'
 import Headermain from './Headermain';
 import Footermain from './Footermain';
 import Column from './Column'
@@ -13,12 +13,11 @@ class Login extends React.Component{
         this.state ={
             email: '',
             password:'',
-            message:'',
-            messages:[],
             currentUser: null,
             image:'',
             comment:'',
-            signup: false
+            signup: false,
+            logout:false
         }
 
         this.logout=this.logout.bind(this)
@@ -42,13 +41,7 @@ class Login extends React.Component{
     }
 
 
-    post = e =>{
-      
-    }
-
-    delete = e =>{
-      
-    }
+   
 
     onChange = e => {
         const { name, value } = e.target
@@ -87,28 +80,42 @@ class Login extends React.Component{
             console.log(res);
             console.log(res.data);
             localStorage.clear();
-            this.setState({currentUser:null})
+            this.setState({currentUser:null,logout:true})
         })
     }
     createNew = () =>{
       this.setState({signup:true})
     }
     render(){
-        const {message,currentUser} =this.state
+        const {message,currentUser,logout} =this.state
+        if(logout){
+          this.setState({logout:false})
+          return < Redirect to='/' push={true} />
+        }
         if(this.state.signup){
            return (
-               <div>
-                <Signup />
-               </div>
+            <Redirect to='/signup' />
            ) 
         }
         if (currentUser){
             return (
+              <Router>
+                 < Redirect to='/home' />
                 <div>
-                <Headermain/>
-                <Column/>
+                  <Route exact path="/home" render={ props => (
+          <div>
+          <Headermain
+                username = {this.state.currentUser.username}
+                logout={this.logout}
+                />
+                {/* <Column/> */}
                 <Footermain/>
+                </div>
+        )} />
+               
                 </div> 
+                </Router>
+              
             )
         }
         return (

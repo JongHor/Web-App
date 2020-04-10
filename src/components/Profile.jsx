@@ -1,9 +1,76 @@
 import React, { Component } from 'react'
+import axios from 'axios';
 
 export default class Profile extends Component {
+  constructor(props){
+    super(props)
+
+    this.state ={
+      id:'',
+      firstname: '',
+      lastname: '',
+      username: '',
+      email: '',
+      password:''
+    }
+}
+componentDidMount(){ // start webpage
+  const exist = localStorage.getItem('token')
+  if(exist!=null){
+      const url = 'https://jonghor.herokuapp.com/api/v3/users/me'
+      axios.get(url,{
+          headers: {
+            'Authorization': `Bearer ${exist}`
+          }
+        })
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          this.setState({ firstname: res.data.user.firstname,
+          lastname:  res.data.user.lastname,
+          username:  res.data.user.username,
+          email:  res.data.user.email,
+          password: res.data.user.password,
+          id:res.data.user._id
+        })
+      })
+  }
+}
+  onChange = e => {
+    const { name, value } = e.target
+    this.setState({
+        [name]: value
+    })
+} 
+
+onSubmit = async e => {
+    e.preventDefault()
+    const exist = localStorage.getItem('token')
+    if(exist!=null){
+      const url = `https://jonghor.herokuapp.com/api/v3/users/edit/${this.state.id}`
+      const data = {
+        "firstname": this.state.firstname,
+        "lastname": this.state.lastname,
+        "username": this.state.username,
+        "email": this.state.email,
+        "password":this.state.password
+      }
+      await axios.put(url,data,{
+          headers: {
+            'Authorization': `Bearer ${exist}`
+          }
+        })
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+          window.location.reload(false)
+        })
+      }
+  }
+
     render() {
         return (
-            <div>
+          <div className="parallax">
   <div className="well">
     
     <ul className="nav nav-tabs">
@@ -12,41 +79,42 @@ export default class Profile extends Component {
     </ul>
     <div id="myTabContent" className="tab-content">
       <div className="tab-pane active in" id="home">
-        <form id="tab">
+        <form id="tab" onSubmit={this.onSubmit}>
           <br />
           <br />
           <label>Username</label>
           <br />
           <br />
-          <input type="text" className="input-xlarge" />
+          <input type="text" onChange={this.onChange} name="username" className="input-xlarge" value={this.state.username} />
           <br />
           <br />
           <label>First Name</label>
           <br />
           <br />
-          <input type="text" className="input-xlarge" />
+          <input type="text"  onChange={this.onChange} name="firstname" className="input-xlarge" value={this.state.firstname} />
           <br />
           <br />
           <label>Last Name</label>
           <br />
           <br />
-          <input type="text" className="input-xlarge" />
+          <input type="text"  onChange={this.onChange} name="lastname" className="input-xlarge" value={this.state.lastname} />
           <br />
           <br />
           <label>Email</label>
           <br />
           <br />
-          <input type="text" className="input-xlarge" />
+          <input type="text"  onChange={this.onChange} name="email"className="input-xlarge" value={this.state.email} />
           <br />
           <br />
-          <label>Address</label>
+          <label>Password</label>
           <br />
           <br />
-          <textarea  rows={3} className="input-xlarge"/>
+          <input type="password"  onChange={this.onChange} name="password"className="input-xlarge"  />
           <br />
           <br />
           <div>
-            <button className="btn btn-primary">Update</button>
+          <input type="submit" defaultValue="Create account" className="btn btn-info" />
+              <a  className="pull-right">Update</a>
           </div>
         </form>
       </div>
@@ -59,7 +127,7 @@ export default class Profile extends Component {
           <input type="password" className="input-xlarge" />
           <div>
           <br />
-            <button className="btn btn-primary">Update</button>
+            <button className="btn btn-primary" onSubmit={this.onSubmit}>Update</button>
           </div>
         </form>
       </div>

@@ -1,8 +1,18 @@
-import React, { Component } from 'react'
+import React from 'react'
+import { Link } from 'react-router-dom';
+import About from './About'
+import Profile from './Profile'
+import Column from './Column'
+import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 
-export default class Headermain extends Component {
-    render() {
+
+function Headermain(props){
+         var toShow = props.username;
+        if(props.username.length>8){
+          toShow = props.username.substring(0,10)+"...";
+        }
         return (
+          <Router>
            <div className="parallax">
   <div className="header" id="top">
     <nav className="navbar navbar-inverse" role="navigation">
@@ -21,11 +31,11 @@ export default class Headermain extends Component {
         {/*/.navbar-header*/}
         <div id="main-nav" className="collapse navbar-collapse">
           <ul className="nav navbar-nav navbar-right">
-            <li><a href="index.html">Home</a></li>
-            <li><a href="fake_url">Profile</a></li>
-            <li><a href="fake_url">About</a></li>
-            <li><a href="fake_url">Username</a></li>
-            <li><a href="fake_url"><span>Log out</span></a></li>
+            <li><Link to="/home"><a >Home</a></Link></li>
+            <li> <Link to="/profile"><a >Profile</a></Link> </li>
+            <li> <Link to="/about"><a >About</a></Link></li>
+            <li><a > {toShow}</a></li>
+            <li><a onClick={props.logout}><span>Log out</span></a></li>
           </ul>
         </div>
         {/*/.navbar-collapse*/}
@@ -34,8 +44,11 @@ export default class Headermain extends Component {
     </nav>
     {/*/.navbar*/}
   </div>
-</div>
-
+      <Route path="/about"><About /></Route>
+      <Route path="/profile"  component={Profile}></Route>
+      <Route path="/home"  component={Column}></Route>
+      </div>
+    </Router>
         )
-    }
 }
+export default Headermain
