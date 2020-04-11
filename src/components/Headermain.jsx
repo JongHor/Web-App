@@ -1,16 +1,65 @@
-import React from 'react'
+import React ,{Component} from 'react'
 import { Link } from 'react-router-dom';
 import About from './About'
 import Profile from './Profile'
 import Column from './Column'
-import Rooms from './Rooms.jsx'
+import Rooms from './Rooms'
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
+import axios from 'axios'
 
 
-function Headermain(props){
-         var toShow = props.username;
-        if(props.username.length>8){
-          toShow = props.username.substring(0,10)+"...";
+class Headermain extends Component{
+    constructor(props){
+      super(props)
+      this.state={
+        select:false,
+        currentUser:null,
+        book:'',
+        hor:'',
+      }
+    } 
+    async fetchs(){
+      const exist = localStorage.getItem('token')
+      const url = 'https://jonghor.herokuapp.com/api/v3/hor'
+      const head = {
+          headers: {
+              'Authorization': `Bearer ${exist}`
+            }
+        };
+      await axios.get(url,head)
+        .then(async res => {
+          await this.setState({hor:res.data})
+      })
+  }
+   me(){
+    const exist = localStorage.getItem('token')
+    if(exist!=null){
+        const url = 'https://jonghor.herokuapp.com/api/v3/users/me'
+        axios.get(url,{
+            headers: {
+              'Authorization': `Bearer ${exist}`
+            }
+          })
+          .then(res => {
+            this.setState({currentUser:res.data.user})
+        })
+    }
+  }
+    componentDidMount(){ // start webpage
+     this.me()
+     this.fetchs()
+  }
+    selectHor = () =>{
+      this.setState({select:true})
+    }
+    initHor = () =>{
+      this.setState({select:false})
+    }
+    
+    render(){
+         var toShow = this.props.username;
+        if(this.props.username.length>8){
+          toShow = this.props.username.substring(0,10)+"...";
         }
         return (
           <Router>
@@ -25,18 +74,18 @@ function Headermain(props){
             <span className="icon-bar" />
             <span className="icon-bar" />
           </button>
-          <a href="fake_url" className="navbar-brand scroll-top"><img src="images/logo.png" alt="Layer" />JONG - HOR</a>
+          <Link to="/" onClick={ this.initHor} ><a  className="navbar-brand scroll-top"><img src="images/logo.png" alt="Layer" />JONG - HOR</a></Link> 
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
         </div>
         {/*/.navbar-header*/}
         <div id="main-nav" className="collapse navbar-collapse">
           <ul className="nav navbar-nav navbar-right">
-            <li><Link to="/home"><a >Home</a></Link></li>
+            <li><Link to="/home" onClick={ this.initHor} ><a >Home</a></Link></li>
             <li> <Link to="/profile"><a >Profile</a></Link> </li>
             <li> <Link to="/about"><a >About</a></Link></li>
             <li><a > {toShow}</a></li>
-            <li><a onClick={props.logout}><span>Log out</span></a></li>
+            <li><a onClick={this.props.logout}><span>Log out</span></a></li>
           </ul>
         </div>
         {/*/.navbar-collapse*/}
@@ -47,10 +96,15 @@ function Headermain(props){
   </div>
       <Route path="/about"><About /></Route>
       <Route path="/profile"  component={Profile}></Route>
-      <Route path="/home"  component={Column}></Route>
-      <Route path="/select" component={Rooms}></Route>
+      <Route  path="/" render={ props => (
+          <div>
+            <Column changHor={this.selectHor} init={this.initHor} select={this.state.select} currentUser={this.state.currentUser} booked={this.props.booked} book={this.props.book}  hor={this.state.hor} ></Column>
+          </div>
+        )} />
+      {/* <Route path="/select" component={Rooms}></Route> */}
       </div>
     </Router>
         )
+}
 }
 export default Headermain

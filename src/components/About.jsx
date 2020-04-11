@@ -14,7 +14,6 @@ export default class About extends Component {
             <blockquote>
                 <p>Thanadon Inthasit(610610584)</p> <small><cite title="Source Title">CPE , CMU</cite></small>
             </blockquote>
-            <p> <i class="glyphicon glyphicon-envelope"></i><a herf="https://web.facebook.com/pleumXIII">https://web.facebook.com/pleumXIII</a></p>
         </div>
         <div class="col-sm-2 col-md-2">
         <img src={'https://firebasestorage.googleapis.com/v0/b/expense-3f50b.appspot.com/o/angkeaw_resize.jpg?alt=media&token=3e1a90ce-7221-4a45-bddf-da7624c587c4'} className='card-img-top' alt="..."  />
@@ -23,7 +22,6 @@ export default class About extends Component {
             <blockquote>
                 <p>Apichart Nutchanat (610610707)</p> <small><cite title="Source Title">CPE , CMU</cite></small>
             </blockquote>
-            <p> <i class="glyphicon glyphicon-envelope"></i><a herf="https://web.facebook.com/peapichart">https://web.facebook.com/peapichart</a></p>
         </div>
     </div>
 </div>

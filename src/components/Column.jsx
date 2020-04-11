@@ -1,54 +1,103 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link ,Redirect} from 'react-router-dom';
 import Rooms from './Rooms.jsx'
+import axios from 'axios';
 export default class Column extends Component {
   constructor(props){
     super(props)
-
-    this.state ={
-        selected:false 
+    this.state={
+      number:Number(0),
+      hor:this.props.hor,
     }
+  }
+  //  componentDidMount(){
+  //     this.fetchs();
+  // }
+async refresh(){
+  await window.location.reload();
+}
 
 
-  }
-  selectHor = () =>{
-    this.setState({selected:true})
-  }
-    render() {
-      const room=[
-        {
-            "booked": false,
-            "_id": "5e8df00b6bee82443cc615c5",
-            "room": 201
-        },
-        {
-            "booked": false,
-            "_id": "5e8df00b6bee82443cc615c6",
-            "room": 202
-        },
-        {
-            "booked": false,
-            "_id": "5e8df00b6bee82443cc615c7",
-            "room": 203
-        },
-        {
-            "booked": false,
-            "_id": "5e8df00b6bee82443cc615c8",
-            "room": 204
-        },
-        {
-            "booked": false,
-            "_id": "5e8df00b6bee82443cc615c9",
-            "room": 205
-        },
-        {
-            "booked": false,
-            "_id": "5e8df00b6bee82443cc615ca",
-            "room": 206
+async cancel(){
+  await this.update_user()
+  await this.update_hor()
+  await this.delete_book()
+  await this.refresh()
+}
+
+async delete_book(){
+  const exist = localStorage.getItem('token')
+  if(exist!=null){
+    const url = `https://jonghor.herokuapp.com/api/v3/book/${this.props.currentUser._id}`
+    await axios.delete(url,{
+        headers: {
+          'Authorization': `Bearer ${exist}`
         }
-    ]    
-    if(this.state.selected){
-      // this.setState({selected:false})
+      })
+      .then(res => {
+      })
+    }
+}
+
+ update_user = async e => {
+  const exist = localStorage.getItem('token')
+  if(exist!=null){
+    const url = `https://jonghor.herokuapp.com/api/v3/users/book/${this.props.currentUser._id}`
+    const data = {
+      "booked":false,
+    }
+    await axios.put(url,data,{
+        headers: {
+          'Authorization': `Bearer ${exist}`
+        }
+      })
+      .then(res => {
+      })
+    }
+}  
+
+async update_hor(){
+  const exist = localStorage.getItem('token')
+        if(exist!=null){
+          const temp = this.props.hor[this.props.book.horId].stairs[0].rooms
+          temp[this.props.book.roomId].booked=false
+          const url = `https://jonghor.herokuapp.com/api/v3/hor/${this.props.hor[this.props.book.horId]._id}`
+            await axios.put(url,{
+              "name": this.props.hor[this.props.book.horId].name,
+              "gender": this.props.hor[this.props.book.horId].gender,
+              "stairs": [
+                  {
+                      "rooms":temp,
+                      "stair":this.props.hor[this.props.book.horId].stairs[0].stair
+                  }
+              ]
+            },{
+                headers: {
+                  'Authorization': `Bearer ${exist}`
+                }
+              })
+              .then(res => {
+            })
+        }
+}
+
+  checkcondition=num=>{
+    if(this.props.currentUser.booked|(this.props.currentUser.gender!==this.props.hor[num].gender)){
+      alert("คุณได้จองหอแล้ว")
+      return false
+      
+    } else{
+      this.choose(num)
+    }
+  }
+
+  choose=num=>{
+    this.setState({number:num})
+    this.props.changHor();
+  }
+
+    render() {
+    if(this.props.select){
       return (
         <Router>
            < Redirect to='/select' />
@@ -56,7 +105,11 @@ export default class Column extends Component {
         <Route exact path="/select" render={ props => (
           <div>
           <Rooms 
-              rooms={room} 
+              changHor={this.props.init}
+              rooms={this.props.hor[this.state.number]} 
+              currentUser={this.props.currentUser}
+              index={this.state.number}
+              refresh={this.refresh}
                />
           </div>
         )} />
@@ -82,13 +135,22 @@ export default class Column extends Component {
               <b><h2><span className="black">JONG - HOR (จอง - หอ)</span></h2></b><br/>
               <b><h2><span className="purple">สอบติด มช. เเล้ว! อยู่หอในที่ไหนดี?</span></h2></b><br/><br/>
               <h4><span className="red">เว็บไซต์ JONG - HOR สร้างขึ้นมาเพื่อช่วยน้องๆลูกช้างเชือกใหม่ในการประกอบการตัดสินใจเเละเลือกหอในที่ต้องการ</span></h4>
+              {this.props.booked && (
+                <div>
+                  <br/>
+              <h4><span className="blue">ตอนนี้คุณได้จองหอแล้ว { this.props.book.horName  } {this.props.book.roomNum}</span></h4>
+                   <div className="button" >
+            <a onClick={()=>this.cancel()}>Cancel</a>
+          </div>   
+                </div>
+          )}
             </div>
           </div>
         </div>            
       </div>          
     </div>
     <div className="arrow text-center">
-      <a href="fake_url" className="scroll-link btn btn-dark" data-id="second-section"><i className="fa fa-angle-down" /></a>
+      <a className="scroll-link btn btn-dark" data-id="second-section"><i className="fa fa-angle-down" /></a>
     </div>
   </div>
   <div id="second-section"> 
@@ -111,8 +173,8 @@ export default class Column extends Component {
               <p>- เครื่องซักผ้าหยอดเหรียญ</p>
               <p>- โรงอาหาร</p>
               <p>- เครื่องถ่ายเอกสาร Double A Fast Print</p>                  
-              <div className="button">
-                <a onClick={this.selectHor}>Select</a>
+              <div className="button" >
+                <a onClick={()=>this.checkcondition(0)}>Select</a>
               </div>                  
             </div>
           </div>
@@ -140,8 +202,8 @@ export default class Column extends Component {
               <p>- เครื่องซักผ้าหยอดเหรียญ</p>
               <p>- โรงอาหาร</p>
               <p>- เครื่องถ่ายเอกสาร Double A Fast Print</p>
-              <div className="button">
-                <a >Select</a>
+              <div className="button" >
+                <a onClick={()=>this.checkcondition(1)}>Select</a>
               </div>                  
             </div>
           </div>
@@ -167,8 +229,8 @@ export default class Column extends Component {
               <p>- เครื่องซักผ้าหยอดเหรียญ</p>
               <p>- โรงอาหาร</p>
               <p>- เครื่องถ่ายเอกสาร Double A Fast Print</p>                  
-              <div className="button">
-                <a >Select</a>
+              <div className="button" >
+                <a onClick={()=>this.checkcondition(2)}>Select</a>
               </div>                  
             </div>
           </div>
@@ -195,8 +257,8 @@ export default class Column extends Component {
               <p>- เครื่องซักผ้าหยอดเหรียญ</p>
               <p>- โรงอาหาร</p>
               <p>- เครื่องถ่ายเอกสาร Double A Fast Print</p>
-              <div className="button">
-                <a >Select</a>
+              <div className="button" >
+                <a onClick={()=>this.checkcondition(3)}>Select</a>
               </div>                  
             </div>
           </div>
@@ -223,8 +285,8 @@ export default class Column extends Component {
               <p>- เครื่องซักผ้าหยอดเหรียญ</p>
               <p>- โรงอาหาร</p>
               <p>- เครื่องถ่ายเอกสาร Double A Fast Print</p>                  
-              <div className="button">
-                <a >Select</a>
+              <div className="button" >
+                <a onClick={()=>this.checkcondition(4)}>Select</a>
               </div>                  
             </div>
           </div>
@@ -250,8 +312,8 @@ export default class Column extends Component {
               <p>- เครื่องซักผ้าหยอดเหรียญ</p>
               <p>- โรงอาหาร</p>
               <p>- ตู้เย็น (มีบางห้อง)</p>
-              <div className="button">
-                <a >Select</a>
+              <div className="button" >
+                <a onClick={()=>this.checkcondition(5)}>Select</a>
               </div>                  
             </div>
           </div>

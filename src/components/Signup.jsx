@@ -40,8 +40,6 @@ onChange = e => {
       };
     const url = 'https://jonghor.herokuapp.com/api/v3/users/signup'
     axios.post(url,user) .then(res => {
-        console.log(res);
-        console.log(res.data);
         localStorage.setItem('token',res.data.token)
         this.setState({success:true})
       })

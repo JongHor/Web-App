@@ -15,32 +15,45 @@ class Login extends React.Component{
             image:'',
             comment:'',
             signup: false,
-            logout:false
+            logout:false,
+            book:'',
         }
 
         this.logout=this.logout.bind(this)
     }
 
-    componentDidMount(){ // start webpage
+    async componentDidMount(){ // start webpage
         const exist = localStorage.getItem('token')
         if(exist!=null){
             const url = 'https://jonghor.herokuapp.com/api/v3/users/me'
-            axios.get(url,{
+            await axios.get(url,{
                 headers: {
                   'Authorization': `Bearer ${exist}`
                 }
               })
-              .then(res => {
-                console.log(res);
-                console.log(res.data);
+              .then(async res => {
                 this.setState({currentUser:res.data.user})
+                await this.fetch_book()
             })
         }
     }
 
 
-   
+    async fetch_book(){
+      const exist = localStorage.getItem('token')
+      const url = `https://jonghor.herokuapp.com/api/v3/book/${this.state.currentUser._id}`
+      const head = {
+          headers: {
+              'Authorization': `Bearer ${exist}`
+            }
+        };
+      await axios.get(url,head)
+        .then(res => {
+          this.setState({book:res.data[0]})
+      })
+  }
 
+ 
     onChange = e => {
         const { name, value } = e.target
         this.setState({
@@ -51,15 +64,12 @@ class Login extends React.Component{
     onSubmit = e => {
         e.preventDefault()
         const { email, password } = this.state
-        console.log(email+" "+password)
         const user = {
             "email":email,
             "password":password
           };
         const url = 'https://jonghor.herokuapp.com/api/v3/users/login'
         axios.post(url,user) .then(res => {
-            console.log(res);
-            console.log(res.data);
             localStorage.setItem('token',res.data.token)
             this.componentDidMount()
           })
@@ -75,8 +85,6 @@ class Login extends React.Component{
           };
         axios.get(url,head)
           .then(res => {
-            console.log(res);
-            console.log(res.data);
             localStorage.clear();
             this.setState({currentUser:null,logout:true})
         })
@@ -104,7 +112,9 @@ class Login extends React.Component{
           <div>
           <Headermain
                 username = {this.state.currentUser.username}
+                booked = {this.state.currentUser.booked}
                 logout={this.logout}
+                book={this.state.book}
                 />
                 {/* <Column/> */}
                 <Footermain/>

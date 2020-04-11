@@ -24,8 +24,6 @@ componentDidMount(){ // start webpage
           }
         })
         .then(res => {
-          console.log(res);
-          console.log(res.data);
           this.setState({ firstname: res.data.user.firstname,
           lastname:  res.data.user.lastname,
           username:  res.data.user.username,
@@ -61,8 +59,6 @@ onSubmit = async e => {
           }
         })
         .then(res => {
-          console.log(res);
-          console.log(res.data);
           window.location.reload(false)
         })
       }
@@ -75,7 +71,7 @@ onSubmit = async e => {
     
     <ul className="nav nav-tabs">
       <li className="active"><a href="#home" data-toggle="tab">Profile</a></li>
-      <li><a href="#profile" data-toggle="tab">Password</a></li>
+      
     </ul>
     <div id="myTabContent" className="tab-content">
       <div className="tab-pane active in" id="home">
@@ -115,19 +111,6 @@ onSubmit = async e => {
           <div>
           <input type="submit" defaultValue="Create account" className="btn btn-info" />
               <a  className="pull-right">Update</a>
-          </div>
-        </form>
-      </div>
-      <div className="tab-pane fade" id="profile">
-        <form id="tab2">
-        <br />
-          <label>New Password</label>
-          <br />
-          <br />
-          <input type="password" className="input-xlarge" />
-          <div>
-          <br />
-            <button className="btn btn-primary" onSubmit={this.onSubmit}>Update</button>
           </div>
         </form>
       </div>
