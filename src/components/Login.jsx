@@ -31,6 +31,7 @@ class Login extends React.Component{
                 }
               })
               .then(async res => {
+                console.log(res)
                 this.setState({currentUser:res.data.user})
             })
         }
@@ -55,8 +56,12 @@ class Login extends React.Component{
           };
         const url = 'https://jonghor.herokuapp.com/api/v3/users/login'
         axios.post(url,user) .then(res => {
-            localStorage.setItem('token',res.data.token)
-            this.componentDidMount()
+            if(res.status==200){
+              localStorage.setItem('token',res.data.token)
+              this.componentDidMount()
+            }else{
+              alert(res.data)
+            }
           })
     } 
 
