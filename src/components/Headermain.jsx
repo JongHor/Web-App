@@ -16,9 +16,27 @@ class Headermain extends Component{
         currentUser:null,
         book:'',
         hor:'',
+        show:false,
+        refresh:false,
+        booked:false
       }
     } 
-    async fetchs(){
+    //// fetch
+    async fetch_book(){
+      const exist = localStorage.getItem('token')
+      const url = `https://jonghor.herokuapp.com/api/v3/book/${this.state.currentUser._id}`
+      const head = {
+          headers: {
+              'Authorization': `Bearer ${exist}`
+            }
+        };
+       axios.get(url,head)
+        .then(res => {
+          this.setState({book:res.data[0],show:true})  
+          this.resetRefresh()
+      })
+  }
+  async fetchs(){
       const exist = localStorage.getItem('token')
       const url = 'https://jonghor.herokuapp.com/api/v3/hor'
       const head = {
@@ -26,14 +44,15 @@ class Headermain extends Component{
               'Authorization': `Bearer ${exist}`
             }
         };
-      await axios.get(url,head)
-        .then(async res => {
-          await this.setState({hor:res.data})
+       axios.get(url,head)
+        .then( res => {
+           this.setState({hor:res.data})
+           this.fetch_book()
       })
-  }
-   me(){
-    const exist = localStorage.getItem('token')
-    if(exist!=null){
+}
+
+   async fetch_user(){
+      const exist = localStorage.getItem('token')
         const url = 'https://jonghor.herokuapp.com/api/v3/users/me'
         axios.get(url,{
             headers: {
@@ -41,22 +60,41 @@ class Headermain extends Component{
             }
           })
           .then(res => {
-            this.setState({currentUser:res.data.user})
+            this.setState({currentUser:res.data.user,booked:res.data.user.booked})
+
+      this.fetchs()
         })
-    }
   }
-    componentDidMount(){ // start webpage
-     this.me()
-     this.fetchs()
+  ////
+///
+  setRefresh=()=>{
+    this.setState({refresh:true})
   }
+  resetRefresh=()=>{
+    this.setState({refresh:false})
+  }
+////
+  //
+     componentDidMount(){ // start webpage
+      this.fetch_user()
+  }
+  /// 
+  ///
     selectHor = () =>{
       this.setState({select:true})
     }
     initHor = () =>{
       this.setState({select:false})
     }
-    
+    ////
     render(){
+      if(this.state.refresh){
+        this.fetch_user()
+        return null
+      }
+      if(!this.state.show){
+        return null;
+      }
          var toShow = this.props.username;
         if(this.props.username.length>8){
           toShow = this.props.username.substring(0,10)+"...";
@@ -74,7 +112,7 @@ class Headermain extends Component{
             <span className="icon-bar" />
             <span className="icon-bar" />
           </button>
-          <Link to="/" onClick={ this.initHor} ><a  className="navbar-brand scroll-top"><img src="images/logo.png" alt="Layer" />JONG - HOR</a></Link> 
+          <Link to="/home" onClick={ this.initHor} ><a  className="navbar-brand scroll-top"><img src="images/logo.png" alt="Layer" />JONG - HOR</a></Link> 
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
           &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
         </div>
@@ -96,12 +134,12 @@ class Headermain extends Component{
   </div>
       <Route path="/about"><About /></Route>
       <Route path="/profile"  component={Profile}></Route>
-      <Route  path="/" render={ props => (
+      <Route  path="/home" render={ props => (
           <div>
-            <Column changHor={this.selectHor} init={this.initHor} select={this.state.select} currentUser={this.state.currentUser} booked={this.props.booked} book={this.props.book}  hor={this.state.hor} ></Column>
+            <Column changHor={this.selectHor} init={this.initHor} select={this.state.select} currentUser={this.state.currentUser} booked={this.state.booked} book={this.state.book}  hor={this.state.hor} refresh={this.setRefresh}></Column>
           </div>
         )} />
-      {/* <Route path="/select" component={Rooms}></Route> */}
+      <Route path="/select" component={Rooms}></Route>
       </div>
     </Router>
         )

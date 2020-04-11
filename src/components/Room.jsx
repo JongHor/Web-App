@@ -30,6 +30,7 @@ export default class Room extends Component {
                 }
               })
               .then(res => {
+                this.onSubmit()
             })
         }
   }
@@ -49,6 +50,8 @@ export default class Room extends Component {
           .then(res => {
             this.setState({bookingSucc:true})
             this.props.changHor()
+            this.bookadd()
+            this.props.refresh()
           })
         }
     }  
@@ -69,22 +72,21 @@ export default class Room extends Component {
             }
           })
           .then(res => {
+            this.props.refresh()
           })
         }
     }
 
   booking(){
     this.updating()
-    this.onSubmit()
-    this.bookadd()
   }
+
   render() {
       const name = this.props.room.room
       if(this.state.bookingSucc){
-        
         return(
           <Router>
-          <Redirect to='/'/> 
+          <Redirect to='/home'/> 
           </Router>
         )
       }

@@ -8,22 +8,21 @@ export default class Column extends Component {
     this.state={
       number:Number(0),
       hor:this.props.hor,
+//fixx
+      booked:this.props.booked,
+      currentUser:this.props.currentUser,
+      horName:(this.props.book===undefined) ? '':this.props.book.horName,  
+      roomNum:(this.props.book===undefined) ? '':this.props.book.roomNum,
+      horId:(this.props.book===undefined) ? '':this.props.book.horId,
+      roomId:(this.props.book===undefined) ? '':this.props.book.roomId,
+      refresh:false,
     }
   }
-  //  componentDidMount(){
-  //     this.fetchs();
-  // }
-async refresh(){
-  await window.location.reload();
-}
-
 
 async cancel(){
-  await this.update_user()
-  await this.update_hor()
-  await this.delete_book()
-  await this.refresh()
+   this.update_user()
 }
+
 
 async delete_book(){
   const exist = localStorage.getItem('token')
@@ -35,6 +34,7 @@ async delete_book(){
         }
       })
       .then(res => {
+        this.props.refresh()
       })
     }
 }
@@ -52,6 +52,9 @@ async delete_book(){
         }
       })
       .then(res => {
+        this.setState({currentUser:res.data,booked:res.data.booked})
+        // console.log(res.data.gender)
+        this.update_hor()
       })
     }
 }  
@@ -59,9 +62,9 @@ async delete_book(){
 async update_hor(){
   const exist = localStorage.getItem('token')
         if(exist!=null){
-          const temp = this.props.hor[this.props.book.horId].stairs[0].rooms
-          temp[this.props.book.roomId].booked=false
-          const url = `https://jonghor.herokuapp.com/api/v3/hor/${this.props.hor[this.props.book.horId]._id}`
+          const temp = this.state.hor[this.state.horId].stairs[0].rooms
+          temp[this.state.roomId].booked=false
+          const url = `https://jonghor.herokuapp.com/api/v3/hor/${this.state.hor[this.state.horId]._id}`
             await axios.put(url,{
               "name": this.props.hor[this.props.book.horId].name,
               "gender": this.props.hor[this.props.book.horId].gender,
@@ -77,12 +80,26 @@ async update_hor(){
                 }
               })
               .then(res => {
+                this.delete_book()
             })
         }
 }
-
+// async fetchs(){
+//   const exist = localStorage.getItem('token')
+//   const url = 'https://jonghor.herokuapp.com/api/v3/hor'
+//   const head = {
+//       headers: {
+//           'Authorization': `Bearer ${exist}`
+//         }
+//     };
+//    axios.get(url,head)
+//     .then( res => {
+//        this.setState({hor:res.data})
+//        this.delete_book()
+//   })
+// }
   checkcondition=num=>{
-    if(this.props.currentUser.booked|(this.props.currentUser.gender!==this.props.hor[num].gender)){
+    if(this.state.currentUser.booked|(this.state.currentUser.gender!==this.state.hor[num].gender)){
       alert("คุณได้จองหอแล้ว")
       return false
       
@@ -107,9 +124,9 @@ async update_hor(){
           <Rooms 
               changHor={this.props.init}
               rooms={this.props.hor[this.state.number]} 
-              currentUser={this.props.currentUser}
+              currentUser={this.state.currentUser}
               index={this.state.number}
-              refresh={this.refresh}
+              refresh={this.props.refresh}
                />
           </div>
         )} />
@@ -135,10 +152,10 @@ async update_hor(){
               <b><h2><span className="black">JONG - HOR (จอง - หอ)</span></h2></b><br/>
               <b><h2><span className="purple">สอบติด มช. เเล้ว! อยู่หอในที่ไหนดี?</span></h2></b><br/><br/>
               <h4><span className="red">เว็บไซต์ JONG - HOR สร้างขึ้นมาเพื่อช่วยน้องๆลูกช้างเชือกใหม่ในการประกอบการตัดสินใจเเละเลือกหอในที่ต้องการ</span></h4>
-              {this.props.booked && (
+              {this.state.booked && (
                 <div>
                   <br/>
-              <h4><span className="blue">ตอนนี้คุณได้จองหอแล้ว { this.props.book.horName  } {this.props.book.roomNum}</span></h4>
+              <h4><span className="blue">ตอนนี้คุณได้จองหอแล้ว { this.state.horName  } {this.state.roomNum}</span></h4>
                    <div className="button" >
             <a onClick={()=>this.cancel()}>Cancel</a>
           </div>   

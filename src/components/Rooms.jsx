@@ -1,6 +1,6 @@
 import React,{Component} from 'react'
-
 import Room from './Room';
+
 export default class Rooms extends Component{
   constructor(props){
     super(props)

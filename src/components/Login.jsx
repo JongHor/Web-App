@@ -16,7 +16,6 @@ class Login extends React.Component{
             comment:'',
             signup: false,
             logout:false,
-            book:'',
         }
 
         this.logout=this.logout.bind(this)
@@ -33,25 +32,11 @@ class Login extends React.Component{
               })
               .then(async res => {
                 this.setState({currentUser:res.data.user})
-                await this.fetch_book()
             })
         }
     }
 
 
-    async fetch_book(){
-      const exist = localStorage.getItem('token')
-      const url = `https://jonghor.herokuapp.com/api/v3/book/${this.state.currentUser._id}`
-      const head = {
-          headers: {
-              'Authorization': `Bearer ${exist}`
-            }
-        };
-      await axios.get(url,head)
-        .then(res => {
-          this.setState({book:res.data[0]})
-      })
-  }
 
  
     onChange = e => {
@@ -114,7 +99,7 @@ class Login extends React.Component{
                 username = {this.state.currentUser.username}
                 booked = {this.state.currentUser.booked}
                 logout={this.logout}
-                book={this.state.book}
+              
                 />
                 {/* <Column/> */}
                 <Footermain/>
