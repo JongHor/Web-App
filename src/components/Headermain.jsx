@@ -59,19 +59,23 @@ class Headermain extends Component{
               'Authorization': `Bearer ${exist}`
             }
           })
-          .then(res => {
-            this.setState({currentUser:res.data.user,booked:res.data.user.booked})
+          .then(async res => {
+            await this.setState({currentUser:res.data.user,booked:res.data.user.booked})
 
       this.fetchs()
         })
   }
   ////
+  setBooked=()=>{
+    this.setState({booked:false})
+  }
 ///
   setRefresh=()=>{
     this.setState({refresh:true})
   }
   resetRefresh=()=>{
     this.setState({refresh:false})
+    console.log(this.state.booked)
   }
 ////
   //
@@ -136,7 +140,7 @@ class Headermain extends Component{
       <Route path="/profile"  component={Profile}></Route>
       <Route  path="/home" render={ props => (
           <div>
-            <Column changHor={this.selectHor} init={this.initHor} select={this.state.select} currentUser={this.state.currentUser} booked={this.state.booked} book={this.state.book}  hor={this.state.hor} refresh={this.setRefresh}></Column>
+            <Column changHor={this.selectHor} init={this.initHor} select={this.state.select} currentUser={this.state.currentUser} booked={this.state.booked} book={this.state.book}  hor={this.state.hor} refresh={this.setRefresh} setBooked={this.setBooked}></Column>
           </div>
         )} />
       <Route path="/select" component={Rooms}></Route>

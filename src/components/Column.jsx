@@ -20,9 +20,13 @@ export default class Column extends Component {
   }
 
 async cancel(){
-   this.update_user()
+   await this.update_user()
+   await this.props.setBooked()
 }
 
+setBooked=()=>{
+  this.setState({booked:false})
+}
 
 async delete_book(){
   const exist = localStorage.getItem('token')
@@ -51,10 +55,10 @@ async delete_book(){
           'Authorization': `Bearer ${exist}`
         }
       })
-      .then(res => {
-        this.setState({currentUser:res.data,booked:res.data.booked})
+      .then(async res => {
+        // this.setState({currentUser:res.data,booked:res.data.booked})
         // console.log(res.data.gender)
-        this.update_hor()
+        await this.update_hor()
       })
     }
 }  
@@ -80,6 +84,7 @@ async update_hor(){
                 }
               })
               .then(res => {
+                // this.fetchs()
                 this.delete_book()
             })
         }
@@ -95,7 +100,7 @@ async update_hor(){
 //    axios.get(url,head)
 //     .then( res => {
 //        this.setState({hor:res.data})
-//        this.delete_book()
+//        
 //   })
 // }
   checkcondition=num=>{
