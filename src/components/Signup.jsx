@@ -26,7 +26,7 @@ onChange = e => {
   })
 } 
 
-  onSubmit = e => {
+  onSubmit = async e => {
     e.preventDefault()
     const { firstname,lastname,gender,username,email,password,confirmpassword } = this.state
     if(password==confirmpassword){
@@ -39,14 +39,18 @@ onChange = e => {
         "password":password
       };
     const url = 'https://jonghor.herokuapp.com/api/v3/users/signup'
-    axios.post(url,user) .then(res => {
+    axios.post(url,user).then(res => {
       console.log(res)
       if(res.status==200){
+        console.log(res.data)
         localStorage.setItem('token',res.data.token)
         this.setState({success:true})
       }else{
         alert(res.data)
       }
+    }).catch(error=>{
+      console.log(error)
+      alert(error)
     })
   }else{
     alert("Password Not same!!!")

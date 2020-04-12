@@ -31,7 +31,6 @@ class Login extends React.Component{
                 }
               })
               .then(async res => {
-                console.log(res)
                 this.setState({currentUser:res.data.user})
             })
         }
@@ -62,6 +61,8 @@ class Login extends React.Component{
             }else{
               alert(res.data)
             }
+          }).catch(error=>{
+            alert(error)
           })
     } 
 

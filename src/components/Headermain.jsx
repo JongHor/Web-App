@@ -61,8 +61,7 @@ class Headermain extends Component{
           })
           .then(async res => {
             await this.setState({currentUser:res.data.user,booked:res.data.user.booked})
-
-      this.fetchs()
+            this.fetchs()
         })
   }
   ////
@@ -75,7 +74,6 @@ class Headermain extends Component{
   }
   resetRefresh=()=>{
     this.setState({refresh:false})
-    console.log(this.state.booked)
   }
 ////
   //

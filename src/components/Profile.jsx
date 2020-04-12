@@ -60,6 +60,8 @@ onSubmit = async e => {
         })
         .then(res => {
           window.location.reload(false)
+        }).catch(error=>{
+          alert(error)
         })
       }
   }
